@@ -9,9 +9,10 @@ app.use(express.json());
 
 app.get('/', (request, response) => {
     try {
-        console.log("Servidor funcionando");  
+        response.status(200).json({mensagem:"Servidor funcionando"});
     } catch (error) {
         console.log(error.message);
+        response.status(500).json({mensagem: "Erro interno do servidor."});
     }
 })
 
