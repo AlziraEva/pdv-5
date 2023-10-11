@@ -7,8 +7,8 @@ CREATE TABLE usuarios(
 
 CREATE TABLE categorias(
  id SERIAL PRIMARY KEY,
- descricao VARCHAR(150)
- );
+ descricao VARCHAR(150) NOT NULL
+);
  
  INSERT INTO categorias (descricao)
  VALUES 
