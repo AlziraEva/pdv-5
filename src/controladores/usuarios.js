@@ -63,7 +63,61 @@ const efetuarLoginDoUsuario = async(req, res) => {
     }
 }
 
+const detalharUsuario = async(req, res) => {
+    
+    return res.status(200).json(req.usuario);
+};
+
+const editarUsuario = async (req, res) =>{
+    const { nome, email, senha } = req.body;
+
+    const {id} = req.usuario;
+
+    try{
+        const usuarioExistente = await knex('usuarios')
+        .where('email', email)
+        .whereNot('id', id)
+        .first();
+
+        if(usuarioExistente){
+            
+            return res.status(400).json({mensagem: 'O e-mail informado já está sendo utilizado por outro usuário.'});
+
+        }
+
+        const senhaCriptografada = await bcrypt.hash(senha, 10);
+
+        await knex('usuarios')
+        .where('id',id)
+        .update({
+            nome,
+            email,
+            senha:senhaCriptografada
+        });
+
+        return res.status(204).send();
+
+    } catch(error){
+        return res.status(400).json({mensagem: 'O servidor não entendeu a requisição.'})
+    }
+};
+
+const categorias = async (req, res) => {
+    try{
+
+        const categoria = await knex('categorias').select('*');
+
+        return res.status(200).json(categoria);
+    } catch(error){
+
+        return res.status(400).json({mensagem: 'O servido não entendeu a requisição.'})
+    }
+};
+
 module.exports = {
     cadastrarUsuario,
-    efetuarLoginDoUsuario
+    efetuarLoginDoUsuario,
+    detalharUsuario,
+    editarUsuario,
+    categorias
 }
