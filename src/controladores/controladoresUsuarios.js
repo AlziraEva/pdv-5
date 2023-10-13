@@ -80,9 +80,7 @@ const editarUsuario = async (req, res) => {
             .first();
 
         if (usuarioExistente) {
-
             return res.status(400).json({ mensagem: 'O e-mail informado já está sendo utilizado por outro usuário.' });
-
         }
 
         const senhaCriptografada = await bcrypt.hash(senha, 10);
@@ -98,10 +96,9 @@ const editarUsuario = async (req, res) => {
         return res.status(204).send();
 
     } catch (error) {
-        return res.status(500).json({ mensagem: 'Erro interno do servidor.' })
+        return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
     }
 };
-
 
 module.exports = {
     cadastrarUsuario,

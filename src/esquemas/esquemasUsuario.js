@@ -1,6 +1,6 @@
 const joi = require('joi');
 
-const esquemaCadastroUsuario = joi.object({
+const esquemaUsuario = joi.object({
     nome: joi.string().required().max(150).messages({
         'string.base': 'O campo nome precisa conter apenas letras.',
         'string.max': 'O nome precisa conter no máximo 150 caracteres.',
@@ -40,6 +40,6 @@ const esquemaLoginUsuario = joi.object({
 });
 
 module.exports = {
-    esquemaCadastroUsuario,
+    esquemaUsuario,
     esquemaLoginUsuario
 }
