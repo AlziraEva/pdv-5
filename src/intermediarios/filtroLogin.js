@@ -5,7 +5,7 @@ const verificarLogin = async (req, res, next) => {
     const { authorization } = req.headers;
 
     if (!authorization) {
-        return res.status(401).json('Não autorizado.');
+        return res.status(401).json({ mensagem: 'Acesso não autorizado. Efetue o login.' });
     }
 
     try {
@@ -13,13 +13,13 @@ const verificarLogin = async (req, res, next) => {
 
         const { id } = jwt.verify(token, process.env.JWT_SECRET);
 
-        const usuarioLog = await knex('usuarios').where('id', id).first();
+        const usuarioLogado = await knex('usuarios').where({id}).first();
 
-        if (!usuarioLog) {
-            return res.status(404).json('Usuario não encontrado.');
+        if (!usuarioLogado) {
+            return res.status(404).json({ mensagem: 'Usuario não encontrado.' });
         }
 
-        const { senha, ...usuario } = usuarioLog;
+        const { senha, ...usuario } = usuarioLogado;
 
         req.usuario = usuario;
 

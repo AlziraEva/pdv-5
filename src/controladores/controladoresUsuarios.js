@@ -74,10 +74,7 @@ const editarUsuario = async (req, res) => {
     const { id } = req.usuario;
 
     try {
-        const usuarioExistente = await knex('usuarios')
-            .where('email', email)
-            .whereNot('id', id)
-            .first();
+        const usuarioExistente = await knex('usuarios').where({ email }).whereNot({ id }).first();
 
         if (usuarioExistente) {
             return res.status(400).json({ mensagem: 'O e-mail informado já está sendo utilizado por outro usuário.' });
