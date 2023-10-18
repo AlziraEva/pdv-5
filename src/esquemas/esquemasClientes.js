@@ -20,9 +20,7 @@ const esquemaCliente = joi.object({
         'string.length': 'O cpf precisa conter exatamente 11 caracteres. Insira apenas números.',
         'any.required': 'O campo cpf é obrigatório.',
         'string.empty': 'O campo cpf é obrigatório.',
-    }).transform((cpfInserido) => {
-        return cpfInserido.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-    })
+    }),
 });
 
 module.exports = {
