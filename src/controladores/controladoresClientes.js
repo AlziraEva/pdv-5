@@ -44,6 +44,12 @@ const editarCliente = async (req, res) => {
     const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;
     const { id } = req.params
     try {
+        const clienteExiste = await knex('clientes').where({ id }).first();
+
+        if (!clienteExiste) {
+            return res.status(404).json({ mensagem: 'Cliente não encontrado' });
+        }
+
         const emailExiste = await knex('clientes').where({ email }).whereNot({ id }).first();
 
         if (emailExiste) {
