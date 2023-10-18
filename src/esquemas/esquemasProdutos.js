@@ -30,9 +30,3 @@ const esquemaProdutos = joi.object({
 module.exports = {
     esquemaProdutos
 }
-
-
-- descricao
-    - quantidade_estoque
-    - valor
-    - categoria_id
