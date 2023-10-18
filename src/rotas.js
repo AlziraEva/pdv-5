@@ -21,5 +21,7 @@ rotas.get('/usuario', detalharUsuario);
 rotas.put('/usuario', validarRequisicao(esquemaUsuario), editarUsuario);
 rotas.post('/produto', validarRequisicao(esquemaProduto), cadastrarProduto);
 rotas.delete('/produto/:id', excluirProduto);
+rotas.post('/cliente', validarRequisicao(esquemaCliente), campoUnicoCliente, cadastrarCliente)
+rotas.put('/cliente/:id', validarRequisicao(esquemaCliente), campoUnicoCliente, editarCliente)
 
 module.exports = rotas;
