@@ -23,3 +23,24 @@ CREATE TABLE categorias(
 ('Moda'),
 ('Bebê'),
 ('Games');
+
+CREATE TABLE produtos(
+    id SERIAL PRIMARY KEY NOT NULL,
+    descricao VARCHAR(150) NOT NULL,
+    quantidade_estoque INTEGER NOT NULL,
+    valor INTEGER NOT NULL,
+    categoria_id INTEGER REFERENCES categorias(id) NOT NULL
+);
+
+CREATE TABLE clientes(
+    id SERIAL PRIMARY KEY NOT NULL,
+    nome VARCHAR(150) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    cpf VARCHAR(14) UNIQUE NOT NULL,
+    cep VARCHAR(9),
+    rua VARCHAR(100),
+    numero INTEGER,
+    bairro VARCHAR(30),
+    cidade VARCHAR(30),
+    estado VARCHAR(2)
+);
