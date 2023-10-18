@@ -8,8 +8,8 @@ const { esquemaProdutos } = require('./esquemas/esquemasProdutos');
 const validarRequisicao = require('./intermediarios/validarRequisicao');
 const verificarLogin = require('./intermediarios/filtroLogin');
 const { cadastrarCliente, editarCliente, listarClientes, detalharCliente } = require('./controladores/controladoresClientes');
-const { esquemaCliente } = require('./esquemas/esquemasClientes');
-const campoUnicoCliente = require('./intermediarios/verificarClientes');
+
+
 
 
 const rotas = express()
@@ -24,8 +24,9 @@ rotas.get('/usuario', detalharUsuario);
 rotas.put('/usuario', validarRequisicao(esquemaUsuario), editarUsuario);
 rotas.post('/produto', validarRequisicao(esquemaProdutos), cadastrarProduto);
 rotas.delete('/produto/:id', excluirProduto);
-rotas.post('/cliente', validarRequisicao(esquemaCliente), campoUnicoCliente, cadastrarCliente);
-rotas.put('/cliente/:id', validarRequisicao(esquemaCliente), campoUnicoCliente, editarCliente);
+
+rotas.post('/cliente', validarRequisicao(esquemaCliente), cadastrarCliente)
+rotas.put('/cliente/:id', validarRequisicao(esquemaCliente), editarCliente)
 rotas.get('/cliente', listarClientes);
 rotas.get('/cliente/:id', detalharCliente);
 

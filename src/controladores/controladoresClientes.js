@@ -4,6 +4,19 @@ const cadastrarCliente = async (req, res) => {
     const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;
 
     try {
+
+        const emailExiste = await knex('clientes').where({ email }).first();
+
+        if (emailExiste) {
+            return res.status(400).json({ mensagem: 'Email já cadastrado' });
+        }
+
+        const cpfExiste = await knex('clientes').where(cpf).first();
+
+        if (cpfExiste) {
+            return res.status(400).json({ mensagem: 'CPF já cadastrado' });
+        }
+
         const novoCliente = await knex('clientes').insert({
             nome,
             email,
@@ -29,7 +42,19 @@ const cadastrarCliente = async (req, res) => {
 
 const editarCliente = async (req, res) => {
     const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;
+    const { id } = req.params
     try {
+        const emailExiste = await knex('clientes').where({ email }).whereNot({ id }).first();
+
+        if (emailExiste) {
+            return res.status(400).json({ mensagem: 'Email já cadastrado' });
+        }
+
+        const cpfExiste = await knex('clientes').where(cpf).whereNot({ id }).first();
+
+        if (cpfExiste) {
+            return res.status(400).json({ mensagem: 'CPF já cadastrado' });
+        }
 
         const atualizarCliente = await knex('clientes').where({ id }).update({
             nome,

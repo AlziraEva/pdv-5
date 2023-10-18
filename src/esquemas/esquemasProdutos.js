@@ -21,7 +21,7 @@ const esquemaProdutos = joi.object({
     }),
 
     categoria_id: joi.number().required().positive().messages({
-        'number.base': 'O campo categoria_id precisa ser um número válido e ser informado em centavos.',
+        'number.base': 'O campo categoria_id precisa ser um número válido.',
         'any.required': 'O campo categoria_id é obrigatório',
         'number.positive': 'O campo categoria_id deve ser um número inteiro positivo.'
     })
