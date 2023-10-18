@@ -27,7 +27,7 @@ const excluirProduto = async (req, res) => {
     const { id } = req.params;
 
     try {
-       
+
         const produto = await knex('produtos').where('id', id).first();
 
         if (!produto) {
