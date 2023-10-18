@@ -21,6 +21,4 @@ const campoUnicoCliente = async (req, res) => {
     }
 };
 
-module.exports = {
-    campoUnicoCliente
-}
+module.exports = campoUnicoCliente
