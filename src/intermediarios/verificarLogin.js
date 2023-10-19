@@ -13,7 +13,7 @@ const verificarLogin = async (req, res, next) => {
 
         const { id } = jwt.verify(token, process.env.JWT_SECRET);
 
-        const usuarioLogado = await knex('usuarios').where({id}).first();
+        const usuarioLogado = await knex('usuarios').where({ id }).first();
 
         if (!usuarioLogado) {
             return res.status(404).json({ mensagem: 'Usuario não encontrado.' });
@@ -26,8 +26,14 @@ const verificarLogin = async (req, res, next) => {
         next();
 
     } catch (error) {
+        if (error.message === 'jwt expired'){
+            return res.status(400).json({ mensagem: 'Token expirado. Faça login novamente.'});
+        }
+
         return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
     }
 };
 
-module.exports = verificarLogin;
+module.exports = {
+    verificarLogin
+}
