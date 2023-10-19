@@ -31,10 +31,6 @@ const verificarClientePorId = async (req, res, next) => {
     
     const { id } = req.params;
 
-    if (isNaN(id)){
-        return res.status(400).json({ mensagem: 'Informe um ID válido. O ID deve ser um número.'})
-    }
-
     const clienteExiste = await knex('clientes').where({ id }).first();
 
     if (!clienteExiste) {
