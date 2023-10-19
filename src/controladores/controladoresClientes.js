@@ -1,20 +1,26 @@
 const knex = require('../conexao');
-const { endereco, enderecoFormatado } = require('../utils/resolverEndereco')
+const { endereco, enderecoFormatado } = require('../utils/enderecos')
 
 const cadastrarCliente = async (req, res) => {
-    const { nome, email, cpf, ...camposOpcionais } = req.body;
-    const camposPermitidos = ['cep', 'rua', 'numero', 'bairro', 'cidade', 'estado'];
+    const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;
 
     try {
-        const novoCliente = { nome, email, cpf };
+        console.log("1")
+        const dadosEndereco = endereco(cep)
+        const obterEndereco = enderecoFormatado(dadosEndereco)
 
-        for (const campo in camposOpcionais) {
-            if (camposPermitidos.includes(campo) && camposOpcionais[campo] !== undefined) {
-                novoCliente[campo] = camposOpcionais[campo];
-            }
-        }
+        const cadastroCliente = await knex('clientes').insert({
+            nome,
+            email,
+            cpf,
+            cep: obterEndereco.cep,
+            rua: obterEndereco.logradouro,
+            numero,
+            bairro: obterEndereco.bairro,
+            cidade: obterEndereco.localidade,
+            estado: obterEndereco.uf
 
-        const cadastroCliente = await knex('clientes').insert(novoCliente);
+        });
 
         if (!cadastroCliente) {
             return res.status(400).json({ mensagem: 'O cliente não foi cadastrado.' });
