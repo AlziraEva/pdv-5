@@ -1,4 +1,4 @@
-const knex = require('knex');
+const knex = require('../conexao');
 
 const verificarDuplicidadeEmailCpf = async (req, res, next) => {
 
@@ -30,6 +30,10 @@ const verificarDuplicidadeEmailCpf = async (req, res, next) => {
 const verificarClientePorId = async (req, res, next) => {
     
     const { id } = req.params;
+
+    if(isNaN(id)){
+        return res.status(400).json({ mensagem: 'O id informado deve ser um número inteiro positivo.'})
+    }
 
     const clienteExiste = await knex('clientes').where({ id }).first();
 
