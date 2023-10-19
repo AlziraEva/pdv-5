@@ -4,10 +4,11 @@ const endereco = async (cep) => {
     try {
         const pegarCep = await axios.get(
             `https://viacep.com.br/ws/${cep}/json/`
-        )
-        return response.data
-    } catch (error) {
 
+        )
+        return pegarCep.data
+    } catch (error) {
+        return res.status(500).json({ mensagem: 'Erro interno no servidor' });
     }
 }
 
