@@ -7,9 +7,11 @@ const { esquemaUsuario, esquemaLoginUsuario } = require('./esquemas/esquemasUsua
 const { esquemaProdutos } = require('./esquemas/esquemasProdutos');
 const { esquemaCliente } = require('./esquemas/esquemasClientes');
 const validarRequisicao = require('./intermediarios/validarRequisicao');
-const verificarLogin = require('./intermediarios/verificarLogin');
+const { verificarLogin } = require('./intermediarios/verificarLogin');
+const { verificarCategoriaPorId } = require('./intermediarios/intermediariosCategorias');
 const { verificarProdutoPorId } = require('./intermediarios/intermediariosProdutos');
 const { verificarDuplicidadeEmailCpf, verificarClientePorId } = require('./intermediarios/intermediariosClientes');
+
 
 const rotas = express();
 
@@ -22,8 +24,8 @@ rotas.use(verificarLogin);
 rotas.get('/usuario', detalharUsuario);
 rotas.put('/usuario', validarRequisicao(esquemaUsuario), editarUsuario);
 
-rotas.post('/produto', validarRequisicao(esquemaProdutos), cadastrarProduto);
-rotas.put('/produto/:id', verificarProdutoPorId, validarRequisicao(esquemaProdutos), editarProduto);
+rotas.post('/produto', validarRequisicao(esquemaProdutos), verificarCategoriaPorId, cadastrarProduto);
+rotas.put('/produto/:id', verificarProdutoPorId, validarRequisicao(esquemaProdutos), verificarCategoriaPorId, editarProduto);
 rotas.get('/produto', listarProdutos);
 rotas.get('/produto/:id', verificarProdutoPorId, detalharProduto);
 rotas.delete('/produto/:id', verificarProdutoPorId, excluirProduto);
