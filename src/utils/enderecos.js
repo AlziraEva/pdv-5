@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const endereco = async (cep) => {
+const apiViaCep = async (cep) => {
     try {
         const pegarCep = await axios.get(
             `https://viacep.com.br/ws/${cep}/json/`
@@ -8,18 +8,25 @@ const endereco = async (cep) => {
         )
         return pegarCep.data
     } catch (error) {
-        return res.status(500).json({ mensagem: 'Erro interno no servidor' });
+        return console.error('Erro ao obter endereço via "API Via CEP".');
     }
 }
 
-const enderecoFormatado = (cepDados) => {
-    return `${cepDados.logradouro}, 
-    ${cepDados.bairro}, 
-    ${cepDados.localidade},
-    ${cepDados.uf},
-    ${cepDados.cep}`
+const formatarEndereco = (cepDados) => {
+    const {cep, logradouro, bairro, localidade, uf} = cepDados;
+
+    const enderecoFormatado = {
+        cep,
+        rua: logradouro,
+        numero: null,
+        bairro,
+        cidade: localidade,
+        estado: uf
+    }
+
+    return enderecoFormatado;
 }
 module.exports = {
-    endereco,
-    enderecoFormatado
+    apiViaCep,
+    formatarEndereco
 }

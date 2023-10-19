@@ -23,11 +23,14 @@ const esquemaCliente = joi.object({
         'string.pattern.base': 'O campo cpf deve conter apenas números.',
     }),
 
+    cep: joi.number(),
+/*
     cep: joi.string().length(8).pattern(/^\d{8}$/).messages({
         'string.base': 'O campo cep precisa ter um formato válido.',
         'string.length': 'O cep precisa conter exatamente 8 caracteres.',
         'string.pattern.base': 'O cep deve conter apenas números.',
     }),
+    */
 
     rua: joi.string().max(150).messages({
         'string.base': 'O campo rua precisa ter um formato válido.',
