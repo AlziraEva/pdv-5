@@ -14,13 +14,13 @@ const esquemaProdutos = joi.object({
         'string.empty': 'O campo quantidade_estoque é obrigatório.',
     }),
 
-    valor: joi.integer().required().positive().messages({
+    valor: joi.number().required().integer().positive().messages({
         'number.base': 'O campo valor precisa ser um número válido e ser informado em centavos.',
         'any.required': 'O campo valor é obrigatório',
         'number.positive': 'O campo valor deve ser um número inteiro positivo.'
     }),
 
-    categoria_id: joi.integer().required().positive().messages({
+    categoria_id: joi.number().required().integer().positive().messages({
         'number.base': 'O campo categoria_id precisa ser um número válido.',
         'any.required': 'O campo categoria_id é obrigatório',
         'number.positive': 'O campo categoria_id deve ser um número inteiro positivo.'
