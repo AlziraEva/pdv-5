@@ -1,4 +1,5 @@
 const knex = require('../conexao');
+const { endereco, enderecoFormatado } = require('../utils/resolverEndereco')
 
 const cadastrarCliente = async (req, res) => {
     const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;
@@ -9,24 +10,28 @@ const cadastrarCliente = async (req, res) => {
 
         if (emailExiste) {
             return res.status(400).json({ mensagem: 'Email já cadastrado' });
-        }
+        };
 
         const cpfExiste = await knex('clientes').where(cpf).first();
 
         if (cpfExiste) {
             return res.status(400).json({ mensagem: 'CPF já cadastrado' });
-        }
+        };
+
+        const dadosEndereco = endereco(cep)
+
+        const obterEndereco = enderecoFormatado(dadosEndereco)
 
         const novoCliente = await knex('clientes').insert({
             nome,
             email,
             cpf,
-            cep,
-            rua,
+            cep: obterEndereco.cep,
+            rua: obterEndereco.logradouro,
             numero,
-            bairro,
-            cidade,
-            estado
+            bairro: obterEndereco.bairro,
+            cidade: obterEndereco.uf,
+            estado: obterEndereco.localidade
         });
 
         if (!novoCliente) {
