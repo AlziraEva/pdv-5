@@ -4,13 +4,14 @@ const cadastrarProduto = async (req, res) => {
     const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
 
     try {
+        
         const novoProduto = await knex('produtos').insert({
             descricao,
             quantidade_estoque,
             valor,
             categoria_id,
         }).returning('*');
-
+        
         if (!novoProduto) {
             return res.status(400).json({ mensagem: 'O produto não foi cadastrado.' });
         }
@@ -27,12 +28,6 @@ const editarProduto = async (req, res) => {
     const { id } = req.params;
   
     try {
-        const categoriaExiste = await knex('categorias').where({ id: categoria_id }).first();
-
-        if(!categoriaExiste){
-            return res.status(404).json({ mensagem: 'Não há categoria cadastrada com o ID informado.'});
-        }
-    
         const produtoAtualizado = { descricao, quantidade_estoque, valor, categoria_id };
     
         const atualizacaoProduto = await knex('produtos').where({ id }).update(produtoAtualizado);
@@ -56,10 +51,6 @@ const listarProdutos = async (req, res) =>{
         let consulta = knex('produtos').select('*');
 
         if(categoria_id){
-
-            if (isNaN(categoria_id)){
-                return res.status(400).json({ mensagem: 'Informe um ID válido. O ID deve ser um número.'})
-            }
 
             const categoriaExiste = await knex('categorias').where({ id: categoria_id }).first();
 

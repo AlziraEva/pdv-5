@@ -91,7 +91,6 @@ const editarUsuario = async (req, res) => {
 };
 
 const detalharUsuario = async (req, res) => {
- 
     return res.status(200).json(req.usuario);  
 };
 
