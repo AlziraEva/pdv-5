@@ -2,39 +2,21 @@ const knex = require('../conexao');
 const { endereco, enderecoFormatado } = require('../utils/resolverEndereco')
 
 const cadastrarCliente = async (req, res) => {
-    const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;
+    const { nome, email, cpf, ...camposOpcionais } = req.body;
+    const camposPermitidos = ['cep', 'rua', 'numero', 'bairro', 'cidade', 'estado'];
 
     try {
+        const novoCliente = { nome, email, cpf };
 
-        const emailExiste = await knex('clientes').where({ email }).first();
+        for (const campo in camposOpcionais) {
+            if (camposPermitidos.includes(campo) && camposOpcionais[campo] !== undefined) {
+                novoCliente[campo] = camposOpcionais[campo];
+            }
+        }
 
-        if (emailExiste) {
-            return res.status(400).json({ mensagem: 'Email já cadastrado' });
-        };
+        const cadastroCliente = await knex('clientes').insert(novoCliente);
 
-        const cpfExiste = await knex('clientes').where(cpf).first();
-
-        if (cpfExiste) {
-            return res.status(400).json({ mensagem: 'CPF já cadastrado' });
-        };
-
-        const dadosEndereco = endereco(cep)
-
-        const obterEndereco = enderecoFormatado(dadosEndereco)
-
-        const novoCliente = await knex('clientes').insert({
-            nome,
-            email,
-            cpf,
-            cep: obterEndereco.cep,
-            rua: obterEndereco.logradouro,
-            numero,
-            bairro: obterEndereco.bairro,
-            cidade: obterEndereco.uf,
-            estado: obterEndereco.localidade
-        });
-
-        if (!novoCliente) {
+        if (!cadastroCliente) {
             return res.status(400).json({ mensagem: 'O cliente não foi cadastrado.' });
         }
 
@@ -46,40 +28,23 @@ const cadastrarCliente = async (req, res) => {
 };
 
 const editarCliente = async (req, res) => {
-    const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;
-    const { id } = req.params
+    const { nome, email, cpf, ...camposOpcionais } = req.body;
+    const { id } = req.params;
+
+    const camposPermitidos = ['cep', 'rua', 'numero', 'bairro', 'cidade', 'estado'];
+
     try {
-        const clienteExiste = await knex('clientes').where({ id }).first();
+        const clienteAtualizado = { nome, email, cpf };
 
-        if (!clienteExiste) {
-            return res.status(404).json({ mensagem: 'Cliente não encontrado' });
+        for (const campo in camposOpcionais) {
+            if (camposPermitidos.includes(campo) && camposOpcionais[campo] !== undefined) {
+                clienteAtualizado[campo] = camposOpcionais[campo];
+            }
         }
 
-        const emailExiste = await knex('clientes').where({ email }).whereNot({ id }).first();
+        const atualizacaoCliente = await knex('clientes').where({ id }).update(clienteAtualizado);
 
-        if (emailExiste) {
-            return res.status(400).json({ mensagem: 'Email já cadastrado' });
-        }
-
-        const cpfExiste = await knex('clientes').where(cpf).whereNot({ id }).first();
-
-        if (cpfExiste) {
-            return res.status(400).json({ mensagem: 'CPF já cadastrado' });
-        }
-
-        const atualizarCliente = await knex('clientes').where({ id }).update({
-            nome,
-            email,
-            cpf,
-            cep,
-            rua,
-            numero,
-            bairro,
-            cidade,
-            estado
-        });
-
-        if (!atualizarCliente) {
+        if (!atualizacaoCliente) {
             return res.status(400).json({ mensagem: 'O cliente não foi atualizado.' });
         }
 
@@ -101,20 +66,14 @@ const listarClientes = async (req, res) => {
 };
 
 const detalharCliente = async (req, res) => {
-    const { id } = req.params
+    const { cliente } = req;
 
     try {
-        const clienteEncontrado = await knex('clientes').where({ id }).first();
-
-        if (!clienteEncontrado) {
-            return res.status(404).json({ mensagem: 'Cliente não encontrado' });
-        }
-
-        return res.status(200).json(clienteEncontrado);
+        return res.status(200).json(cliente);
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno no servidor' });
     }
-}
+};
 
 module.exports = {
     cadastrarCliente,
