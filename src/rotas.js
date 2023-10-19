@@ -6,11 +6,8 @@ const { esquemaUsuario, esquemaLoginUsuario } = require('./esquemas/esquemasUsua
 const { esquemaCliente } = require('./esquemas/esquemasClientes');
 const { esquemaProdutos } = require('./esquemas/esquemasProdutos');
 const validarRequisicao = require('./intermediarios/validarRequisicao');
-const verificarLogin = require('./intermediarios/filtroLogin');
+const verificarLogin = require('./intermediarios/verificarLogin');
 const { cadastrarCliente, editarCliente, listarClientes, detalharCliente } = require('./controladores/controladoresClientes');
-
-
-
 
 const rotas = express()
 
