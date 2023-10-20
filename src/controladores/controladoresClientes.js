@@ -26,7 +26,10 @@ const cadastrarCliente = async (req, res) => {
                 novoCliente['bairro'] = bairro;
             };
             if (cidade) {
-                novoCliente['rua'] = rua;
+                novoCliente['cidade'] = cidade;
+            };
+            if (estado) {
+                novoCliente['estado'] = estado;
             };
 
         }
