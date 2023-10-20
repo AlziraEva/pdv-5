@@ -4,28 +4,48 @@ const { apiViaCep, formatarEndereco } = require('../utils/enderecos')
 const cadastrarCliente = async (req, res) => {
     const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;
 
-    try {  
-        let novoCliente = {nome, email, cpf};
+    const camposPermitidos = ['cep', 'rua', 'numero', 'bairro', 'cidade', 'estado'];
 
-        if(cep){
+    try {
+        let novoCliente = { nome, email, cpf };
+
+        if (cep) {
             const dadosEndereco = await apiViaCep(cep)
 
             const endereco = formatarEndereco(dadosEndereco)
 
-            novoCliente = {...novoCliente, ...endereco};
+            novoCliente = { ...novoCliente, ...endereco };
 
-            if (numero){
+            if (numero) {
                 novoCliente['numero'] = numero;
+            };
+            if (rua) {
+                novoCliente['rua'] = rua;
+            };
+            if (bairro) {
+                novoCliente['bairro'] = bairro;
+            };
+            if (cidade) {
+                novoCliente['rua'] = rua;
+            };
+
+        }
+
+        const camposOpcionais = { rua, numero, bairro, cidade, estado }
+
+        for (const campo in camposOpcionais) {
+            if (camposPermitidos.includes(campo) && camposOpcionais[campo] !== undefined) {
+                novoCliente[campo] = camposOpcionais[campo];
             }
         }
-         
-        const cadastroCliente = await knex('clientes').insert(novoCliente);
+
+        const cadastroCliente = await knex('clientes').insert(novoCliente).returning('*');
 
         if (!cadastroCliente) {
             return res.status(400).json({ mensagem: 'O cliente não foi cadastrado.' });
         }
 
-        return res.status(201).json({ mensagem: 'O cliente foi cadastrado.' });
+        return res.status(201).json(cadastroCliente);
 
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno no servidor' });
