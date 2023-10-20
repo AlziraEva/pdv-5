@@ -98,5 +98,5 @@ module.exports = {
     cadastrarUsuario,
     efetuarLoginDoUsuario,
     editarUsuario,
-    detalharUsuario,
+    detalharUsuario
 }
