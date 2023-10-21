@@ -1,5 +1,5 @@
 const knex = require('../conexao');
-const { apiViaCep, formatarEndereco } = require('../utils/apiViaCep')
+const { complementarEnderecoViaCep } = require('../utils/apiViaCep')
 
 const cadastrarCliente = async (req, res) => {
     const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;
