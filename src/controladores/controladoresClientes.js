@@ -1,31 +1,26 @@
 const knex = require('../conexao');
-const { apiViaCep, formatarEndereco } = require('../utils/enderecos')
+const { complementarEnderecoViaCep } = require('../utils/enderecos')
 
 const cadastrarCliente = async (req, res) => {
     const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;
 
     try {  
-        let novoCliente = {nome, email, cpf};
+        let dadosCliente = {nome, email, cpf, cep, rua, numero, bairro, cidade, estado};
 
-        if(cep){
-            const dadosEndereco = await apiViaCep(cep)
-
-            const endereco = formatarEndereco(dadosEndereco)
-
-            novoCliente = {...novoCliente, ...endereco};
-
-            if (numero){
-                novoCliente['numero'] = numero;
-            }
+        if (cep){
+            dadosCliente = await complementarEnderecoViaCep(cep, dadosCliente);
         }
-         
-        const cadastroCliente = await knex('clientes').insert(novoCliente);
+        
+        const cadastroCliente = await knex('clientes').insert(dadosCliente);
 
         if (!cadastroCliente) {
             return res.status(400).json({ mensagem: 'O cliente não foi cadastrado.' });
         }
 
-        return res.status(201).json({ mensagem: 'O cliente foi cadastrado.' });
+        return res.status(201).json({ 
+            mensagem: 'O cliente foi cadastrado com sucesso.', 
+            "dados cadastrados": dadosCliente 
+        });
 
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno no servidor' });
@@ -33,27 +28,26 @@ const cadastrarCliente = async (req, res) => {
 };
 
 const editarCliente = async (req, res) => {
-    const { nome, email, cpf, ...camposOpcionais } = req.body;
+    const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;
     const { id } = req.params;
 
-    const camposPermitidos = ['cep', 'rua', 'numero', 'bairro', 'cidade', 'estado'];
-
     try {
-        const clienteAtualizado = { nome, email, cpf };
+        let dadosCliente = {nome, email, cpf, cep, rua, numero, bairro, cidade, estado};
 
-        for (const campo in camposOpcionais) {
-            if (camposPermitidos.includes(campo) && camposOpcionais[campo] !== undefined) {
-                clienteAtualizado[campo] = camposOpcionais[campo];
-            }
+        if(cep){
+            dadosCliente = await complementarEnderecoViaCep(cep, dadosCliente);
         }
 
-        const atualizacaoCliente = await knex('clientes').where({ id }).update(clienteAtualizado);
+        const atualizacaoCliente = await knex('clientes').where({ id }).update(dadosCliente).returning('*');
 
-        if (!atualizacaoCliente) {
+        if (!atualizacaoCliente[0]) {
             return res.status(400).json({ mensagem: 'O cliente não foi atualizado.' });
         }
 
-        return res.status(200).json({ mensagem: 'Dados do cliente atualizados com sucesso.' });
+        return res.status(200).json({
+            mensagem: 'O cliente foi atualizado com sucesso.', 
+            "dados atualizados": atualizacaoCliente[0] 
+        });
 
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno no servidor' });
@@ -62,10 +56,15 @@ const editarCliente = async (req, res) => {
 
 const listarClientes = async (req, res) => {
     try {
-        const clientes = await knex('clientes').select('*');
+        const clientes = await knex('clientes').select('*').orderBy('id');
+
+        if(!clientes[0]){
+            return res.status(200).json({ mensagem: 'Ainda não há clientes cadastrados no sistema.'})
+        }
 
         return res.status(200).json(clientes);
     } catch (error) {
+        console.log(error.message)
         return res.status(500).json({ mensagem: 'Erro interno no servidor' });
     }
 };
