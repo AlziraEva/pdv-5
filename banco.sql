@@ -44,3 +44,21 @@ CREATE TABLE clientes(
     cidade VARCHAR(30),
     estado VARCHAR(2)
 );
+
+CREATE TABLE pedidos (
+    id SERIAL PRIMARY KEY NOT NULL,
+    cliente_id INTEGER REFERENCES clientes(id) NOT NULL,
+    observacao VARCHAR(150) NOT NULL,
+    valor_total INTEGER NOT NULL
+);
+
+CREATE TABLE pedido_produtos (
+    id SERIAL PRIMARY KEY NOT NULL,
+    pedido_id INTEGER REFERENCES pedidos(id) NOT NULL,
+    produto_id INTEGER REFERENCES produtos(id) NOT NULL,
+    quantidade_produto INTEGER NOT NULL,
+    valor_produto INTEGER NOT NULL
+);
+
+ALTER TABLE produtos
+ADD produto_imagem BYTEA;
