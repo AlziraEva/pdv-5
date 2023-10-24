@@ -78,12 +78,12 @@ const editarUsuario = async (req, res) => {
         const senhaCriptografada = await bcrypt.hash(senha, 10);
 
         await knex('usuarios').where({ id }).update({
-                nome,
-                email,
-                senha: senhaCriptografada
-            });
+            nome,
+            email,
+            senha: senhaCriptografada
+        });
 
-        return res.status(200).json({ mensagem: 'Dados do usuário atualizados com sucesso.'});
+        return res.status(200).json({ mensagem: 'Dados do usuário atualizados com sucesso.' });
 
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
@@ -91,7 +91,7 @@ const editarUsuario = async (req, res) => {
 };
 
 const detalharUsuario = async (req, res) => {
-    return res.status(200).json(req.usuario);  
+    return res.status(200).json(req.usuario);
 };
 
 module.exports = {
