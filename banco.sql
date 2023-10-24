@@ -48,8 +48,8 @@ CREATE TABLE clientes(
 CREATE TABLE pedidos (
     id SERIAL PRIMARY KEY NOT NULL,
     cliente_id INTEGER REFERENCES clientes(id) NOT NULL,
-    observacao VARCHAR(150) NOT NULL,
-    valor_total INTEGER NOT NULL
+    observacao VARCHAR(150),
+    valor_total INTEGER 
 );
 
 CREATE TABLE pedido_produtos (
@@ -57,7 +57,7 @@ CREATE TABLE pedido_produtos (
     pedido_id INTEGER REFERENCES pedidos(id) NOT NULL,
     produto_id INTEGER REFERENCES produtos(id) NOT NULL,
     quantidade_produto INTEGER NOT NULL,
-    valor_produto INTEGER NOT NULL
+    valor_produto INTEGER 
 );
 
 ALTER TABLE produtos
