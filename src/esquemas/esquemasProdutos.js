@@ -8,8 +8,9 @@ const esquemaProdutos = joi.object({
         'string.empty': 'O campo descrição é obrigatório.',
     }),
 
-    quantidade_estoque: joi.number().integer().required().messages({
+    quantidade_estoque: joi.number().integer().positive().required().messages({
         'number.base': 'O campo quantidade_estoque precisa ser um número inteiro.',
+        'number.positive': 'O campo valor deve ser um número inteiro positivo.',
         'any.required': 'O campo quantidade_estoque é obrigatório.',
         'string.empty': 'O campo quantidade_estoque é obrigatório.',
     }),
