@@ -1,4 +1,4 @@
-const axios = require('axios')
+const axios = require('axios');
 
 const complementarEnderecoViaCep = async (cep, dadosCliente) => {
     try {
@@ -27,7 +27,6 @@ const complementarEnderecoViaCep = async (cep, dadosCliente) => {
         return console.error('Erro ao obter endereço via "API Via CEP".');
     }
 }
-
 
 
 module.exports = {

@@ -9,8 +9,9 @@ const { esquemaCliente } = require('./esquemas/esquemasClientes');
 const validarRequisicao = require('./intermediarios/validarRequisicao');
 const { verificarLogin } = require('./intermediarios/verificarLogin');
 const { verificarCategoriaPorId } = require('./intermediarios/intermediariosCategorias');
-const { verificarProdutoPorId } = require('./intermediarios/intermediariosProdutos');
+const { verificarProdutoPorId, validarPedido } = require('./intermediarios/intermediariosProdutos');
 const { verificarDuplicidadeEmailCpf, verificarClientePorId } = require('./intermediarios/intermediariosClientes');
+const { cadastrarPedido } = require('./controladores/controladoresPedidos');
 
 
 const rotas = express();
@@ -34,5 +35,7 @@ rotas.post('/cliente', validarRequisicao(esquemaCliente), verificarDuplicidadeEm
 rotas.put('/cliente/:id', verificarClientePorId, validarRequisicao(esquemaCliente), verificarDuplicidadeEmailCpf, editarCliente);
 rotas.get('/cliente', listarClientes);
 rotas.get('/cliente/:id', verificarClientePorId, detalharCliente);
+
+rotas.post('/pedido', verificarClientePorId, validarPedido, cadastrarPedido);
 
 module.exports = rotas;
