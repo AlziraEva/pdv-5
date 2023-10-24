@@ -12,6 +12,7 @@ const { verificarCategoriaPorId } = require('./intermediarios/intermediariosCate
 const { verificarProdutoPorId, validarPedido } = require('./intermediarios/intermediariosProdutos');
 const { verificarDuplicidadeEmailCpf, verificarClientePorId } = require('./intermediarios/intermediariosClientes');
 const { cadastrarPedido } = require('./controladores/controladoresPedidos');
+const { esquemaPedidos } = require('./esquemas/esquemasPedidos');
 
 
 const rotas = express();
@@ -36,6 +37,6 @@ rotas.put('/cliente/:id', verificarClientePorId, validarRequisicao(esquemaClient
 rotas.get('/cliente', listarClientes);
 rotas.get('/cliente/:id', verificarClientePorId, detalharCliente);
 
-rotas.post('/pedido', verificarClientePorId, validarPedido, cadastrarPedido);
+rotas.post('/pedido', validarRequisicao(esquemaPedidos), verificarClientePorId, validarPedido, cadastrarPedido);
 
 module.exports = rotas;
