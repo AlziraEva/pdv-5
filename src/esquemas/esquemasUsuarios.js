@@ -14,10 +14,9 @@ const esquemaUsuario = joi.object({
         'any.required': 'O campo email é obrigatório.',
         'string.empty': 'O campo email é obrigatório.',
     }),
-    
-    senha: joi.string().required().min(6).messages({
+
+    senha: joi.string().required().messages({
         'string.base': 'A senha precisa ter um formato válido.',
-        'string.min': 'A senha precisa conter no mínimo 6 caracteres.',
         'any.required': 'O campo senha é obrigatório.',
         'string.empty': 'O campo senha é obrigatório.',
     })
@@ -30,10 +29,9 @@ const esquemaLoginUsuario = joi.object({
         'any.required': 'O campo email é obrigatório.',
         'string.empty': 'O campo email é obrigatório.',
     }),
-    
-    senha: joi.string().required().min(6).messages({
+
+    senha: joi.string().required().messages({
         'string.base': 'A senha precisa ter um formato válido.',
-        'string.min': 'A senha precisa conter no mínimo 6 caracteres.',
         'any.required': 'O campo senha é obrigatório.',
         'string.empty': 'O campo senha é obrigatório.',
     })
