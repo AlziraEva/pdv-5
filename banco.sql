@@ -48,7 +48,7 @@ CREATE TABLE clientes(
 CREATE TABLE pedidos (
     id SERIAL PRIMARY KEY NOT NULL,
     cliente_id INTEGER REFERENCES clientes(id) NOT NULL,
-    observacao VARCHAR(150),
+    observacao VARCHAR(255),
     valor_total INTEGER 
 );
 
