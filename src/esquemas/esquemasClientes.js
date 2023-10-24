@@ -2,7 +2,7 @@ const joi = require('joi');
 
 const esquemaCliente = joi.object({
     nome: joi.string().required().max(150).messages({
-        'any.required': 'O campo nome é obrigatório.', 
+        'any.required': 'O campo nome é obrigatório.',
         'string.base': 'O campo nome precisa conter apenas letras.',
         'string.empty': 'O campo nome é obrigatório.',
         'string.max': 'O campo nome precisa conter no máximo 150 caracteres.',
@@ -12,9 +12,9 @@ const esquemaCliente = joi.object({
         'any.required': 'O campo email é obrigatório.',
         'string.base': 'O campo email precisa ter um formato válido.',
         'string.email': 'O campo email precisa ter um formato válido.',
-        'string.empty': 'O campo email é obrigatório.', 
+        'string.empty': 'O campo email é obrigatório.',
     }),
-    
+
     cpf: joi.string().required().length(11).pattern(/^\d{11}$/).messages({
         'any.required': 'O campo cpf é obrigatório.',
         'string.base': 'O cpf precisa ter um formato válido.',
