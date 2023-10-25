@@ -11,7 +11,7 @@ const { verificarLogin } = require('./intermediarios/verificarLogin');
 const { verificarCategoriaPorId } = require('./intermediarios/intermediariosCategorias');
 const { verificarProdutoPorId, validarPedido } = require('./intermediarios/intermediariosProdutos');
 const { verificarDuplicidadeEmailCpf, verificarClientePorId } = require('./intermediarios/intermediariosClientes');
-const { cadastrarPedido } = require('./controladores/controladoresPedidos');
+const { cadastrarPedido, listarPedidos } = require('./controladores/controladoresPedidos');
 const { esquemaPedidos } = require('./esquemas/esquemasPedidos');
 
 
@@ -38,5 +38,6 @@ rotas.get('/cliente', listarClientes);
 rotas.get('/cliente/:id', verificarClientePorId, detalharCliente);
 
 rotas.post('/pedido', validarRequisicao(esquemaPedidos), verificarClientePorId, validarPedido, cadastrarPedido);
+rotas.get('/pedido', listarPedidos);
 
 module.exports = rotas;
