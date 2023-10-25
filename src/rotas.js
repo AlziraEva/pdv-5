@@ -9,7 +9,7 @@ const { esquemaCliente } = require('./esquemas/esquemasClientes');
 const validarRequisicao = require('./intermediarios/validarRequisicao');
 const { verificarLogin } = require('./intermediarios/verificarLogin');
 const { verificarCategoriaPorId } = require('./intermediarios/intermediariosCategorias');
-const { verificarProdutoPorId } = require('./intermediarios/intermediariosProdutos');
+const { verificarProdutoPorId, verificarProdutoEmPedidos } = require('./intermediarios/intermediariosProdutos');
 const { validarPedido } = require('./intermediarios/intermediariosPedidos');
 const { verificarDuplicidadeEmailCpf, verificarClientePorId } = require('./intermediarios/intermediariosClientes');
 const { cadastrarPedido } = require('./controladores/controladoresPedidos');
@@ -31,7 +31,7 @@ rotas.post('/produto', validarRequisicao(esquemaProdutos), verificarCategoriaPor
 rotas.put('/produto/:id', verificarProdutoPorId, validarRequisicao(esquemaProdutos), verificarCategoriaPorId, editarProduto);
 rotas.get('/produto', verificarCategoriaPorId, listarProdutos);
 rotas.get('/produto/:id', verificarProdutoPorId, detalharProduto);
-rotas.delete('/produto/:id', verificarProdutoPorId, excluirProduto);
+rotas.delete('/produto/:id', verificarProdutoPorId, verificarProdutoEmPedidos,  excluirProduto);
 
 rotas.post('/cliente', validarRequisicao(esquemaCliente), verificarDuplicidadeEmailCpf, cadastrarCliente);
 rotas.put('/cliente/:id', verificarClientePorId, validarRequisicao(esquemaCliente), verificarDuplicidadeEmailCpf, editarCliente);
