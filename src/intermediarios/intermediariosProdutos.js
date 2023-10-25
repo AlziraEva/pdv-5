@@ -36,7 +36,7 @@ const validarPedido = async (req, res, next) => {
                 return res.status(400).json({ mensagem: 'Não há produto cadastrado com o ID especificado.' })
             }
 
-            if (produtoExiste.quantidade_produto < quantidade_produto) {
+            if (produtoExiste.quantidade_estoque < quantidade_produto) {
                 return res.status(400).json({ mensagem: 'Quantidade em estoque insuficiente.' })
             }
         }
