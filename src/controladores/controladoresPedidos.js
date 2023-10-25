@@ -13,7 +13,6 @@ const cadastrarPedido = async (req, res) => {
                 valor_total: 0
             }).returning('id');
 
-
             let valorTotalPedido = 0;
             let produtoExiste;
 
