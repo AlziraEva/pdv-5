@@ -61,4 +61,4 @@ CREATE TABLE pedido_produtos (
 );
 
 ALTER TABLE produtos
-ADD produto_imagem BYTEA;
+ADD produto_imagem text;
