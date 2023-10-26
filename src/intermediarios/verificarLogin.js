@@ -2,14 +2,14 @@ const knex = require('../conexao');
 const jwt = require('jsonwebtoken');
 
 const verificarLogin = async (req, res, next) => {
-    const { authorization } = req.headers;
-
-    if (!authorization) {
-        return res.status(401).json({ mensagem: 'Acesso não autorizado. Efetue o login.' });
-    }
-
     try {
-        const token = authorization.replace('Bearer ', '').trim();
+        const { authorization: autorizacao } = req.headers;
+
+        if (!autorizacao) {
+            return res.status(401).json({ mensagem: 'Acesso não autorizado. Efetue o login.' });
+        }
+
+        const token = autorizacao.replace('Bearer ', '').trim();
 
         const { id } = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -26,8 +26,8 @@ const verificarLogin = async (req, res, next) => {
         next();
 
     } catch (error) {
-        if (error.message === 'jwt expired'){
-            return res.status(400).json({ mensagem: 'Token expirado. Faça login novamente.'});
+        if (error.message === 'jwt expired') {
+            return res.status(498).json({ mensagem: 'Token expirado. Faça login novamente.' });
         }
 
         return res.status(500).json({ mensagem: 'Erro interno do servidor.' });

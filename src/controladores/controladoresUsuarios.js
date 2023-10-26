@@ -3,9 +3,8 @@ const knex = require('../conexao');
 const jwt = require('jsonwebtoken');
 
 const cadastrarUsuario = async (req, res) => {
-    const { nome, email, senha } = req.body;
-
     try {
+        const { nome, email, senha } = req.body;
         const emailExiste = await knex('usuarios').where({ email }).first();
 
         if (emailExiste) {
@@ -24,17 +23,15 @@ const cadastrarUsuario = async (req, res) => {
             return res.status(400).json({ mensagem: 'O usuário não foi cadastrado.' });
         }
 
-        return res.status(201).json({ mensagem: 'O usuário foi cadastrado.' });
-
+        return res.status(201).json({ mensagem: 'O usuário foi cadastrado com sucesso.' });
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno no servidor' });
     }
 };
 
 const efetuarLoginDoUsuario = async (req, res) => {
-    const { email, senha } = req.body;
-
     try {
+        const { email, senha } = req.body;
         const usuario = await knex('usuarios').where({ email }).first();
 
         if (!usuario) {
@@ -64,11 +61,10 @@ const efetuarLoginDoUsuario = async (req, res) => {
 };
 
 const editarUsuario = async (req, res) => {
-    const { nome, email, senha } = req.body;
-
-    const { id } = req.usuario;
-
     try {
+        const { nome, email, senha } = req.body;
+        const { id } = req.usuario;
+
         const usuarioExistente = await knex('usuarios').where({ email }).whereNot({ id }).first();
 
         if (usuarioExistente) {

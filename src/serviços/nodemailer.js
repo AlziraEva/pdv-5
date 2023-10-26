@@ -9,15 +9,15 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-const send = (to, subject, body) =>{
-    const emailPedido = {
+const enviarEmail = (destinatario, assunto, conteudo) => {
+    const email = {
         from: process.env.MAIL_FROM,
-        to,
-        subject,
-        text: body
+        to: destinatario,
+        subject: assunto,
+        text: conteudo
     };
 
-    transporter.sendMail(emailPedido);
+    transporter.sendMail(email);
 }
 
-module.exports = send
+module.exports = enviarEmail;

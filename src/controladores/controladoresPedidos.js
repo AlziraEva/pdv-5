@@ -1,11 +1,11 @@
 const knex = require('../conexao');
-const { construirMensagem } = require('../utils/emailMensagem');
-const send = require('../utils/nodemailer');
+const { construirMensagem } = require('../serviços/modeloEmail');
+const enviarEmail = require('../serviços/nodemailer');
 
 const cadastrarPedido = async (req, res) => {
-    const { cliente_id, observacao, pedido_produtos } = req.body;
-
     try {
+        const { cliente_id, observacao, pedido_produtos } = req.body;
+
         await knex.transaction(async (trx) => {
             const [pedido_id] = await trx('pedidos').insert({
                 cliente_id,
@@ -39,7 +39,7 @@ const cadastrarPedido = async (req, res) => {
 
             const mensagemEmail = construirMensagem(pedido_id.id, valorTotalPedido, pedido_produtos, produtoExiste);
 
-            await send(emailCliente.email, 'Seu pedido foi realizado!', mensagemEmail);
+            await enviarEmail(emailCliente.email, 'Seu pedido foi realizado!', mensagemEmail);
 
 
             return res.status(201).json({ mensagem: `Pedido de número ${pedido_id.id} cadastrado com sucesso!` })
@@ -50,9 +50,9 @@ const cadastrarPedido = async (req, res) => {
 };
 
 const listarPedidos = async (req, res) => {
-    const { cliente_id } = req.query
-
     try {
+        const { cliente_id } = req.query
+
         if (cliente_id) {
             const pedidosCliente = await knex('pedidos').where({ cliente_id });
             return res.status(200).json(pedidosCliente);
@@ -61,12 +61,11 @@ const listarPedidos = async (req, res) => {
             return res.status(200).json(pedidos);
         }
     } catch (error) {
+        console.log(error.message)
         return res.status(500).json({ mensagem: 'Erro interno no servidor.' })
     }
 
 };
-
-
 
 module.exports = {
     cadastrarPedido,

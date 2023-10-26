@@ -1,8 +1,9 @@
 const knex = require('../conexao');
 
 const validarPedido = async (req, res, next) => {
-    const { pedido_produtos } = req.body;
     try {
+        const { pedido_produtos } = req.body;
+
         for (const produto of pedido_produtos) {
             const { produto_id, quantidade_produto } = produto;
 
@@ -19,7 +20,7 @@ const validarPedido = async (req, res, next) => {
 
         next();
     } catch (erro) {
-        return res.status(500).json({ mensagem: 'Erro interno no servidor.' })
+        return res.status(500).json({ mensagem: 'Erro interno no servidor.' });
     }
 };
 
