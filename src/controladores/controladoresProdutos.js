@@ -96,16 +96,39 @@ const listarProdutos = async (req, res) => {
             return res.status(404).json({ mensagem })
         }
 
-        return res.status(200).json(categoria ? { categoria: req.categoria.descricao, listaProdutos } : listaProdutos);
+        
+        const produtoComImagem = listaProdutos.map((produto)=> {
+
+            if(produto.produto_imagem !== null){
+                return{
+
+                ...produto,
+                imagemUrl: `https://${process.env.BACKBLAZE_BUCKET}.${process.env.ENDPOINT_S3}/${produto.produto_imagem}`
+            };           
+        } else{
+
+            return{ ...produto };    
+        }       
+        });
+
+        const resposta = categoria ? { categoria: req.categoria.descricao, listaProdutos: produtoComImagem } :  produtoComImagem;
+
+        return res.status(200).json(resposta);
 
     } catch (error) {
         console.log(error)
         return res.status(500).json({ mensagem: 'Erro interno no servidor.' });
     }
+    
 };
 
 const detalharProduto = async (req, res) => {
-    return res.status(200).json(req.produto);
+    const produto = req.produto;
+
+    if(produto.produto_imagem !== null){
+        produto.produto_imagem =  `https://${process.env.BACKBLAZE_BUCKET}.${process.env.ENDPOINT_S3}/${produto.produto_imagem}`
+    }
+    return res.status(200).json(produto);
 };
 
 const excluirProduto = async (req, res) => {
