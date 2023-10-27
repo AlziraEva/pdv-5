@@ -35,14 +35,24 @@ const cadastrarPedido = async (req, res) => {
 
             await trx('pedidos').where('id', pedido_id.id).update({ valor_total: valorTotalPedido });
 
+            const resposta = {
+                mensagem: `Pedido de número ${pedido_id.id} cadastrado com sucesso!`,
+                valor_pedido: valorTotalPedido,
+                produtos: pedido_produtos.map(produto => ({
+                    ID_produto: produto.produto_id,
+                    quantidade_produto: produto.quantidade_produto,
+                    valor_total_produto: produtoExiste.valor * produto.quantidade_produto
+
+                }))
+            };
+
             const emailCliente = await knex('clientes').select('email').where('id', cliente_id).first();
 
             const mensagemEmail = construirMensagem(pedido_id.id, valorTotalPedido, pedido_produtos, produtoExiste);
 
-            await enviarEmail(emailCliente.email, 'Seu pedido foi realizado!', mensagemEmail);
+            enviarEmail(emailCliente.email, 'Seu pedido foi realizado!', mensagemEmail);
 
-
-            return res.status(201).json({ mensagem: `Pedido de número ${pedido_id.id} cadastrado com sucesso!` })
+            return res.status(201).json(resposta);
         });
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno no servidor.' })

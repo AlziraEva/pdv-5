@@ -63,7 +63,7 @@ const editarProduto = async (req, res) => {
                 await excluirImagem(req.produto.produto_imagem)
             }
 
-            dadosProduto = await knex('produtos').update({ produto_imagem: imagem.caminho }).where({ id }).returning('*')
+            dadosProduto = await knex('produtos').update({ produto_imagem: imagem.url }).where({ id }).returning('*')
 
             dadosProduto[0].produto_imagem = imagem.url;
         }
