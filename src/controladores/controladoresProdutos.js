@@ -63,7 +63,7 @@ const editarProduto = async (req, res) => {
                 await excluirImagem(req.produto.produto_imagem)
             }
 
-            dadosProduto = await knex('produtos').update({ produto_imagem: imagem.url }).where({ id }).returning('*')
+            dadosProduto = await knex('produtos').update({ produto_imagem: imagem.caminho }).where({ id }).returning('*')
 
             dadosProduto[0].produto_imagem = imagem.url;
         }
@@ -96,9 +96,22 @@ const listarProdutos = async (req, res) => {
             return res.status(404).json({ mensagem })
         }
 
-        return res.status(200).json(categoria ? { categoria: req.categoria.descricao, listaProdutos } : listaProdutos);
+        const imagemProduto = await Promise.all(listaProdutos.map(async (produto) => {
+            if(produto.produto_imagem){
+
+                const imagemInfo = carregarImagem(produto.produto_imagem);
+
+                produto.produto_imagem = imagemInfo
+        
+            }
+            console.log(produto)
+            return produto;
+        }))
+
+        return res.status(200).json(categoria ? { categoria: req.categoria.descricao, listaProdutos: imagemProduto } : imagemProduto);
 
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ mensagem: 'Erro interno no servidor.' });
     }
 };
