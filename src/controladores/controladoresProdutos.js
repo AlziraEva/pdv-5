@@ -26,9 +26,7 @@ const cadastrarProduto = async (req, res) => {
                 mimetype
             )
 
-            dadosProduto = await knex('produtos').update({ produto_imagem: imagem.caminho }).where({ id }).returning('*')
-
-            dadosProduto[0].produto_imagem = imagem.url;
+            dadosProduto = await knex('produtos').update({ produto_imagem: imagem.url }).where({ id }).returning('*');
         }
 
         return res.status(201).json({ mensagem: 'O produto foi cadastrado com sucesso.', dados_produto: dadosProduto[0] });
@@ -60,12 +58,13 @@ const editarProduto = async (req, res) => {
             )
 
             if (req.produto.produto_imagem) {
-                await excluirImagem(req.produto.produto_imagem)
+                const url = req.produto.produto_imagem
+                const caminho = 'produtos' + url.split('produtos')[1];
+
+                await excluirImagem(caminho)
             }
 
-            dadosProduto = await knex('produtos').update({ produto_imagem: imagem.caminho }).where({ id }).returning('*')
-
-            dadosProduto[0].produto_imagem = imagem.url;
+            dadosProduto = await knex('produtos').update({ produto_imagem: imagem.url }).where({ id }).returning('*')
         }
 
         return res.status(200).json({
@@ -96,24 +95,7 @@ const listarProdutos = async (req, res) => {
             return res.status(404).json({ mensagem })
         }
 
-
-        const produtoComImagem = listaProdutos.map((produto) => {
-
-            if (produto.produto_imagem !== null) {
-                return {
-
-                    ...produto,
-                    imagemUrl: `https://${process.env.BACKBLAZE_BUCKET}.${process.env.ENDPOINT_S3}/${produto.produto_imagem}`
-                };
-            } else {
-
-                return { ...produto };
-            }
-        });
-
-        const resposta = categoria ? { categoria: req.categoria.descricao, listaProdutos: produtoComImagem } : produtoComImagem;
-
-        return res.status(200).json(resposta);
+        return res.status(200).json(listaProdutos);
 
     } catch (error) {
         console.log(error)
@@ -125,9 +107,6 @@ const listarProdutos = async (req, res) => {
 const detalharProduto = async (req, res) => {
     const produto = req.produto;
 
-    if (produto.produto_imagem !== null) {
-        produto.produto_imagem = `https://${process.env.BACKBLAZE_BUCKET}.${process.env.ENDPOINT_S3}/${produto.produto_imagem}`
-    }
     return res.status(200).json(produto);
 };
 
@@ -142,7 +121,10 @@ const excluirProduto = async (req, res) => {
         }
 
         if (produtoExcluido[0].produto_imagem) {
-            await excluirImagem(produtoExcluido[0].produto_imagem)
+            const url = produtoExcluido[0].produto_imagem
+            const caminho = 'produtos' + url.split('produtos')[1];
+
+            await excluirImagem(caminho)
         }
 
         return res.status(200).json({ mensagem: 'Produto excluído com sucesso.' });
