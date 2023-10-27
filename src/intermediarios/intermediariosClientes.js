@@ -34,19 +34,21 @@ const verificarDuplicidadeEmailCpf = async (req, res, next) => {
 
 const verificarClientePorId = async (req, res, next) => {
     try {
-        let id = req.params.id || req.body.cliente_id || req.query.cliente_id;;
+        let id = req.params.id || req.body.cliente_id || req.query.cliente_id
 
-        if (isNaN(id)) {
-            return res.status(400).json({ mensagem: 'O id informado deve ser um número inteiro positivo.' })
+        if (id) {
+            if (isNaN(id)) {
+                return res.status(400).json({ mensagem: 'O id informado deve ser um número inteiro positivo.' })
+            }
+
+            const clienteExiste = await knex('clientes').where({ id }).first();
+
+            if (!clienteExiste) {
+                return res.status(404).json({ mensagem: 'Não há cliente cadastrado com o ID especificado.' });
+            }
+
+            req.cliente = clienteExiste;
         }
-
-        const clienteExiste = await knex('clientes').where({ id }).first();
-
-        if (!clienteExiste) {
-            return res.status(404).json({ mensagem: 'Não há cliente cadastrado com o ID especificado.' });
-        }
-
-        req.cliente = clienteExiste;
 
         next();
     } catch (error) {
