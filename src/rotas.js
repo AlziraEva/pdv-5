@@ -28,8 +28,8 @@ rotas.use(verificarLogin);
 rotas.get('/usuario', detalharUsuario);
 rotas.put('/usuario', validarRequisicao(esquemaUsuario), editarUsuario);
 
-rotas.post('/produto', verificarCategoriaPorId, multer.single('produto_imagem'), validarRequisicao(esquemaProdutos), cadastrarProduto);
-rotas.put('/produto/:id', verificarProdutoPorId, multer.single('produto_imagem'), validarRequisicao(esquemaProdutos), verificarCategoriaPorId, editarProduto);
+rotas.post('/produto', multer.single('produto_imagem'), verificarCategoriaPorId, validarRequisicao(esquemaProdutos), cadastrarProduto);
+rotas.put('/produto/:id', multer.single('produto_imagem'), verificarProdutoPorId, validarRequisicao(esquemaProdutos), verificarCategoriaPorId, editarProduto);
 rotas.get('/produto', verificarCategoriaPorId, listarProdutos);
 rotas.get('/produto/:id', verificarProdutoPorId, detalharProduto);
 rotas.delete('/produto/:id', verificarProdutoPorId, verificarProdutoEmPedidos, excluirProduto);
