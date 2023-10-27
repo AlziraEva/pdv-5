@@ -4,7 +4,7 @@ const verificarProdutoPorId = async (req, res, next) => {
     try {
         const { id } = req.params;
 
-        if (isNaN(id)) {
+        if (isNaN(id) || Number(id) <= 0) {
             return res.status(400).json({ mensagem: 'O id informado deve ser um número inteiro positivo.' })
         }
 
