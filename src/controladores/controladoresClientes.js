@@ -18,7 +18,7 @@ const cadastrarCliente = async (req, res) => {
 
         return res.status(201).json({
             mensagem: 'O cliente foi cadastrado com sucesso.',
-            "dados cadastrados": dadosCliente
+            "dados cadastrados": cadastroCliente[0]
         });
 
     } catch (error) {
