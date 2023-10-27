@@ -5,8 +5,8 @@ const verificarCategoriaPorId = async (req, res, next) => {
         const categoria_id = req.body.categoria_id || req.query.categoria_id;
 
         if (categoria_id !== undefined) {
-            if (isNaN(categoria_id)) {
-                return res.status(400).json({ mensagem: 'O id da categoria deve ser um valor numérico.' });
+            if (isNaN(categoria_id) || categoria_id <= 0) {
+                return res.status(400).json({ mensagem: 'O id da categoria deve ser um número inteiro maior que zero.' });
             }
 
             const categoriaExiste = await knex('categorias').where({ id: Number(categoria_id) }).first();
