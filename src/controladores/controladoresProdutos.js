@@ -96,19 +96,7 @@ const listarProdutos = async (req, res) => {
             return res.status(404).json({ mensagem })
         }
 
-        const imagemProduto = await Promise.all(listaProdutos.map(async (produto) => {
-            if(produto.produto_imagem){
-
-                const imagemInfo = carregarImagem(produto.produto_imagem);
-
-                produto.produto_imagem = imagemInfo
-        
-            }
-            console.log(produto)
-            return produto;
-        }))
-
-        return res.status(200).json(categoria ? { categoria: req.categoria.descricao, listaProdutos: imagemProduto } : imagemProduto);
+        return res.status(200).json(categoria ? { categoria: req.categoria.descricao, listaProdutos } : listaProdutos);
 
     } catch (error) {
         console.log(error)
