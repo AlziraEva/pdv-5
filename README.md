@@ -61,6 +61,10 @@ A  **API para um PDV (Frente de Caixa)**  é um projeto que abrangeu múltiplas 
 
 - **GET /pedido**
 
+## Demostração
+
+Link do deploy: [Frente de Caixa](https://distinct-cloak-calf.cyclic.app)
+
   
 ## Como Executar o Projeto
 
@@ -68,7 +72,7 @@ A  **API para um PDV (Frente de Caixa)**  é um projeto que abrangeu múltiplas 
 2. Clone este repositório: `git clone git@github.com:AlziraEva/desafio-cubosAcademy-projeto-api-banco.git`
 3. Instale as dependências: `npm install`
 4. Inicie o servidor: `npm run dev` 
-5. Teste as Rotas: Uma ferramenta para testar APIs é o insomnia. A API estará disponível em: `http://localhost:3000`
+5. Teste as Rotas: A API estará disponível em: [Frente de Caixa](https://distinct-cloak-calf.cyclic.app)
 
 
 ## Como Contribuir para o Projeto
@@ -78,3 +82,12 @@ A  **API para um PDV (Frente de Caixa)**  é um projeto que abrangeu múltiplas 
 3. Faça commit das suas alterações: `git commit -m 'Adiciona nova feature'`
 4. Envie as alterações para o seu fork: `git push origin feature/nova-feature`
 5. Abra um pull request neste repositório
+
+## Contribuidores
+
+- [Karla Silva](https://github.com/KarlaSilvaEng)
+- [Lorraine](https://github.com/Lorrainelbs)
+- [Ana Vitória](https://github.com/claracjz)
+- [Alessandra Lira](https://github.com/AlleLira)
+- [Alzira Eva](https://github.com/AlziraEva)
+
