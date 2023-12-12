@@ -61,29 +61,53 @@ A  **API para um PDV (Frente de Caixa)**  é um projeto que abrangeu múltiplas 
 
 - **GET /pedido**
 
-## Demostração
+## Tecnologias e Linguagens Utilizadas
 
-Link do deploy: [Frente de Caixa](https://distinct-cloak-calf.cyclic.app)
-
+- JavaScript
+- Node.js
+- Express.js
+- Nodemon 
+- Aws-sdk
+- Axios
+- Bcrypt
+- Cors
+- Dotenv
+- Express
+- Handlebars
+- Jsonwebtoken
+- Knex
+- Multer
+- PostgreSQL
+- Nodemailer
   
 ## Como Executar o Projeto
 
-1. Certifique-se de ter o Node.js, Git, VSCode instalados em sua máquina.
-2. Clone este repositório: `git clone git@github.com:AlziraEva/desafio-cubosAcademy-projeto-api-banco.git`
-3. Instale as dependências: `npm install`
-4. Inicie o servidor: `npm run dev` 
-5. Teste as Rotas: A API estará disponível em: [Frente de Caixa](https://distinct-cloak-calf.cyclic.app)
-
+ Teste as Rotas: A API estará disponível em: [Frente de Caixa](https://distinct-cloak-calf.cyclic.app)
 
 ## Como Contribuir para o Projeto
 
 1. Faça um fork deste repositório
-2. Crie uma branch para sua feature: `git checkout -b feature/nova-feature`
-3. Faça commit das suas alterações: `git commit -m 'Adiciona nova feature'`
-4. Envie as alterações para o seu fork: `git push origin feature/nova-feature`
+2. Crie uma branch para sua feature:
+<div>
+  
+     `git checkout -b feature/nova-feature`
+    
+ </div>  
+3. Faça commit das suas alterações:
+<div>
+  
+    `git commit -m Adiciona nova feature`
+    
+ </div>  
+4. Envie as alterações para o seu fork:
+<div>
+     
+    `git push origin feature/nova-feature`
+   
+ </div>
 5. Abra um pull request neste repositório
 
-## Contribuidores
+## Contribuintes
 
 - [Karla Silva](https://github.com/KarlaSilvaEng)
 - [Lorraine](https://github.com/Lorrainelbs)
